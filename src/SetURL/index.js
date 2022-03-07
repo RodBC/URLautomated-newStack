@@ -6,12 +6,6 @@ import logo from '../../assets/logo.png';
 import { parse } from '@babel/core';
 
 export function SetURL() {
-
-  //Nome, base url e imagem url
-  const [NomeServidor, setNome] = useState('');
-  const [BaseURL, setBaseURL] = useState('');
-  const [BaseIMAGE, setBaseIMAGE] = useState('');
-
   // useEffect(() => {
   //   AsyncStorage.getItem('user').then(user => {
   //     if (user) {
@@ -20,49 +14,47 @@ export function SetURL() {
   //   })
   // }, []);
 
-  const [arraySettings, setarraySettings] = useState([]);
+  const [NomeServidor, setNome] = useState('');
+  const [BaseURL, setBaseURL] = useState('');
+  const [BaseIMAGE, setBaseIMAGE] = useState('');
 
-  async function callArraySettings(){
+  const [cadastroSettings, setSettings] = useState(undefined);
 
-    const oldSettings = await getSettings()
-    const settings = {
-      'nome': NomeServidor,
-      'BaseURL': BaseURL,
-      'BaseImagem': BaseIMAGE
-    }
-    console.log(arraySettings);
-
-    if (!oldSettings){
-      setarraySettings(arraySettings.push( ...oldSettings ,JSON.stringify(settings)));
-    }
-  }
-  async function handleAsyncStorage(){
+  async function handleAsyncStorage() {
     //armazenar valor no cache
-    callArraySettings();
 
     const storeSettings = async () => {
 
-      try {
-        await AsyncStorage.setItem('@Settings', arraySettings)
-      } catch (e) {
-        console.log(`erro  ao setar o array ${e}`)
-        }  
-      }
+      setSettings ({
+        'nome': NomeServidor,
+        'BaseURL': BaseURL,
+        'BaseImagem': BaseIMAGE
+      })
+      AsyncStorage.getItem('@Settings')
+        .then((data) => {
+          console.log(data);
+          const SettingsArray = data == 'fistState' ? [] : JSON.parse(settings);
+          SettingsArray.push(cadastroSettings);
+          AsyncStorage.setItem('@Settings', JSON.stringify(SettingsArray));
+        });
+    }
     storeSettings();
-    }
-  const getSettings = async () => {
-    try {
-      const getSettings = await AsyncStorage.getItem('@Settings')
-      if(getSettings !== null) {
-        let parsedSettings = JSON.parse(getSettings);
-        console.log(parsedSettings, '<----')
-        return parsedSettings
-      }
-    } catch(e) {
-      console.log(`erro ao setar as settings previas ${e}`)
-    }
   }
 
+  // const getSettings = async () => {
+  //   try {
+  //     const getSettings = await AsyncStorage.getItem('@Settings')
+  //     console.log(getSettings)
+  //     if (getSettings !== null) {
+  //       // let parsedSettings = JSON.parse(getSettings);
+  //       console.log(getSettings, '<----')
+  //       return getSettings
+  //     }
+  //   } catch (e) {
+  //     console.log(`erro ao setar as settings previas ${e}`)
+  //   }
+  // }
+  
   return (
     <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
       <View>
