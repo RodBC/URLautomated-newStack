@@ -10,19 +10,19 @@ import {ListUrls} from './List'
   //     }
   //   })
   // }, []);
-  
+
 const Routes = createAppContainer(
     createStackNavigator({
         SetURL:{
             screen: SetURL,
             navigationOptions:{
-                title: 'Landing do digao'
+                title: 'Cadastre sua URL'
             },
         },
         ListUrls:{
             screen: ListUrls,
             navigationOptions:{
-                title: 'testin'
+                title: 'URL disponível'
             },
         },
     }, {
