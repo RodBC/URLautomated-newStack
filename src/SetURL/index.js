@@ -30,8 +30,11 @@ export function SetURL() {
       'BaseURL': BaseURL,
       'BaseImagem': BaseIMAGE
     }
-    
-    setarraySettings(arraySettings.push( ...oldSettings ,JSON.stringify(settings)));
+    console.log(arraySettings);
+
+    if (!oldSettings){
+      setarraySettings(arraySettings.push( ...oldSettings ,JSON.stringify(settings)));
+    }
   }
   async function handleAsyncStorage(){
     //armazenar valor no cache
@@ -42,7 +45,7 @@ export function SetURL() {
       try {
         await AsyncStorage.setItem('@Settings', arraySettings)
       } catch (e) {
-        console.log(e)
+        console.log(`erro  ao setar o array ${e}`)
         }  
       }
     storeSettings();
@@ -56,7 +59,7 @@ export function SetURL() {
         return parsedSettings
       }
     } catch(e) {
-      console.log(e)
+      console.log(`erro ao setar as settings previas ${e}`)
     }
   }
 
