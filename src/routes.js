@@ -3,6 +3,14 @@ import { createStackNavigator } from 'react-navigation-stack';
 import {SetURL} from './SetURL';
 import {ListUrls} from './List'
 
+  // useEffect(() => {
+  //   AsyncStorage.getItem('user').then(user => {
+  //     if (user) {
+  //       navigation.navigate('ListUrls');
+  //     }
+  //   })
+  // }, []);
+  
 const Routes = createAppContainer(
     createStackNavigator({
         SetURL:{
@@ -22,7 +30,7 @@ const Routes = createAppContainer(
             headerTintColor: '#FFF',
             headerBackTitleVisible: false,
             headerStyle:{
-                backgroundColor: '#7D40E7',
+                backgroundColor: 'green',
             },
         },
     })

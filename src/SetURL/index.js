@@ -3,6 +3,7 @@ import { View, Image, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, S
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import logo from '../../assets/logo.png';
+import { parse } from '@babel/core';
 
 export function SetURL() {
 
@@ -19,31 +20,40 @@ export function SetURL() {
   //   })
   // }, []);
 
-  async function handleSubmit() {
-    console.log(NomeServidor)
-    console.log(BaseURL)
-    console.log(BaseIMAGE)
-  }
+  const [arraySettings, setarraySettings] = useState([]);
 
+  async function callArraySettings(){
+
+    const oldSettings = await getSettings()
+    const settings = {
+      'nome': NomeServidor,
+      'BaseURL': BaseURL,
+      'BaseImagem': BaseIMAGE
+    }
+    
+    setarraySettings(arraySettings.push( ...oldSettings ,JSON.stringify(settings)));
+  }
   async function handleAsyncStorage(){
     //armazenar valor no cache
-    handleSubmit(); //CONSOLANDO VALORES DE ESTADO ATUAIS
+    callArraySettings();
 
-    const storeNome = async () => {
+    const storeSettings = async () => {
+
       try {
-        await AsyncStorage.setItem('@BaseURL', BaseURL)
+        await AsyncStorage.setItem('@Settings', arraySettings)
       } catch (e) {
         console.log(e)
         }  
       }
-    storeNome()
-    getNome();
+    storeSettings();
     }
-  const getNome = async () => {
+  const getSettings = async () => {
     try {
-      const base = await AsyncStorage.getItem('@BaseURL')
-      if(base !== null) {
-        console.log(base)
+      const getSettings = await AsyncStorage.getItem('@Settings')
+      if(getSettings !== null) {
+        let parsedSettings = JSON.parse(getSettings);
+        console.log(parsedSettings, '<----')
+        return parsedSettings
       }
     } catch(e) {
       console.log(e)
