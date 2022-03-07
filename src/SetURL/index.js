@@ -20,41 +20,46 @@ export function SetURL() {
 
   const [cadastroSettings, setSettings] = useState(undefined);
 
+  // useEffect(() => {
+  //   setSettings ({
+  //     'nome': NomeServidor,
+  //     'BaseURL': BaseURL,
+  //     'BaseImagem': BaseIMAGE
+  //   })
+  // },[NomeServidor, BaseURL, BaseIMAGE])
+
+
   async function handleAsyncStorage() {
     //armazenar valor no cache
-
-    const storeSettings = async () => {
-
-      setSettings ({
-        'nome': NomeServidor,
-        'BaseURL': BaseURL,
-        'BaseImagem': BaseIMAGE
-      })
-      AsyncStorage.getItem('@Settings')
+    setSettings({
+      'nome': NomeServidor,
+      'BaseURL': BaseURL,
+      'BaseImagem': BaseIMAGE
+    })
+      await AsyncStorage.getItem('@Settings')
         .then((data) => {
-          console.log(data);
-          const SettingsArray = data == 'fistState' ? [] : JSON.parse(settings);
+          const SettingsArray = data == 'fistState' ? [] : JSON.parse(data);
           SettingsArray.push(cadastroSettings);
           AsyncStorage.setItem('@Settings', JSON.stringify(SettingsArray));
-        });
-    }
-    storeSettings();
+        })
+        .then(() => getSettings())
   }
 
-  // const getSettings = async () => {
-  //   try {
-  //     const getSettings = await AsyncStorage.getItem('@Settings')
-  //     console.log(getSettings)
-  //     if (getSettings !== null) {
-  //       // let parsedSettings = JSON.parse(getSettings);
-  //       console.log(getSettings, '<----')
-  //       return getSettings
-  //     }
-  //   } catch (e) {
-  //     console.log(`erro ao setar as settings previas ${e}`)
-  //   }
-  // }
-  
+
+  const getSettings = async () => {
+    try {
+      const getSettings = await AsyncStorage.getItem('@Settings')
+      console.log(getSettings, 'atualizado')
+      // if (getSettings !== null) {
+      //   // let parsedSettings = JSON.parse(getSettings);
+      //   console.log(getSettings, '<----')
+      // return getSettings
+      // }
+    } catch (e) {
+      console.log(`erro ao setar as settings previas ${e}`)
+    }
+  }
+
   return (
     <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
       <View>
@@ -90,7 +95,7 @@ export function SetURL() {
             value={BaseIMAGE}
             onChangeText={setBaseIMAGE}
           />
-          <TouchableOpacity onPress={handleAsyncStorage} style={styles.button}>
+          <TouchableOpacity onPress={() => handleAsyncStorage()} style={styles.button}>
             <Text style={styles.buttonText}>Salvar Credenciais</Text>
           </TouchableOpacity>
         </View>
