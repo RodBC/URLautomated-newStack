@@ -11,6 +11,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import logo from '../../assets/logo.png';
+import { NavigationContainer } from '@react-navigation/native';
 /*
   -----------------------------TODO-------------------------------------
   ----------------------------------------------------------------------
@@ -33,18 +34,19 @@ import logo from '../../assets/logo.png';
 -------------------------------------------------------------------------
 */
 export function SetURL() {
-  // useEffect(() => {
-  //   AsyncStorage.getItem('user').then(user => {
-  //     if (user) {
-  //       navigation.navigate('ListUrls');
-  //     }
-  //   })
-  // }, []);
 
+  
   const [nameUrl, setNameUrl] = useState('');
   const [baseUrl, setBaseUrl] = useState('');
   const [baseImageUrl, setBaseImageUrl] = useState('');
-
+  
+  useEffect(() => {
+    AsyncStorage.getItem('@Settings').then(settings => {
+      if (settings){
+        NavigationContainer.navigate('ListUrls')
+      }
+    })
+  })
 
 
   async function handleAsyncStorage() {

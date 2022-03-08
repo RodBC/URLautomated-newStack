@@ -13,24 +13,24 @@ import {ListUrls} from './List'
 
 const Routes = createAppContainer(
     createStackNavigator({
-        SetURL:{
-            screen: SetURL,
-            navigationOptions:{
-                title: 'Cadastre sua URL'
-            },
-        },
-        ListUrls:{
+        ListUrls: {
             screen: ListUrls,
-            navigationOptions:{
-                title: 'URL disponível'
+            navigationOptions: {
+              title: 'Login'
             },
-        },
-    }, {
+          },
+          SetURL: {
+            screen: SetURL,
+            navigationOptions: {
+              title: 'Perfil no Github'
+            }
+          },
+        }, {
         defaultNavigationOptions:{
             headerTintColor: '#FFF',
             headerBackTitleVisible: false,
             headerStyle:{
-                backgroundColor: 'green',
+                backgroundColor: '#009999',
             },
         },
     })
