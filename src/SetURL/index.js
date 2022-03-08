@@ -14,32 +14,31 @@ export function SetURL() {
   //   })
   // }, []);
 
-  const [NomeServidor, setNome] = useState('');
+  const [nameUrl, setNameUrl] = useState('');
   const [BaseURL, setBaseURL] = useState('');
   const [BaseIMAGE, setBaseIMAGE] = useState('');
 
-  const [cadastroSettings, setSettings] = useState(undefined);
 
   // useEffect(() => {
   //   setSettings ({
-  //     'nome': NomeServidor,
+  //     'nome': nameUrl,
   //     'BaseURL': BaseURL,
   //     'BaseImagem': BaseIMAGE
   //   })
-  // },[NomeServidor, BaseURL, BaseIMAGE])
+  // },[nameUrl, BaseURL, BaseIMAGE])
 
 
   async function handleAsyncStorage() {
     //armazenar valor no cache
-    setSettings({
-      'nome': NomeServidor,
-      'BaseURL': BaseURL,
-      'BaseImagem': BaseIMAGE
-    })
+    let newUrlEntrie = {
+      nome: nameUrl,
+      BaseURL: BaseURL,
+      BaseImagem: BaseIMAGE
+    }
       await AsyncStorage.getItem('@Settings')
         .then((data) => {
           const SettingsArray = data == 'fistState' ? [] : JSON.parse(data);
-          SettingsArray.push(cadastroSettings);
+          SettingsArray.push(newUrlEntrie);
           AsyncStorage.setItem('@Settings', JSON.stringify(SettingsArray));
         })
         .then(() => getSettings())
@@ -72,8 +71,8 @@ export function SetURL() {
             placeholderTextColor="#999"
             autoCapitalize="none"
             autoCorrect={false}
-            value={NomeServidor}
-            onChangeText={setNome}
+            value={nameUrl}
+            onChangeText={setNameUrl}
           />
           <Text style={styles.label}>Sua URL *</Text>
           <TextInput
